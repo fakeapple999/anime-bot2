@@ -4,7 +4,7 @@ import subprocess
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# HARDCODED TOKEN — no env var bullshit
+# HARDCODED TOKEN
 BOT_TOKEN = "8732910407:AAFH5C8tg_WM81irgED45A0pLaUx-bN4uRA"
 
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -14,9 +14,10 @@ user_data = {}
 def ani_cli_search(query):
     env = os.environ.copy()
     env["ANI_CLI_PLAYER"] = "debug"
+    env["ANI_CLI_NON_INTERACTIVE"] = "1"
     
     result = subprocess.run(
-        ["ani-cli", "-q", "best", query],
+        ["ani-cli", "-N", "-S", "1", "-q", "best", query],
         capture_output=True, text=True, env=env, timeout=60
     )
     
@@ -33,9 +34,10 @@ def ani_cli_search(query):
 def ani_cli_get_url(anime_name, episode):
     env = os.environ.copy()
     env["ANI_CLI_PLAYER"] = "debug"
+    env["ANI_CLI_NON_INTERACTIVE"] = "1"
     
     result = subprocess.run(
-        ["ani-cli", "-q", "best", "-e", str(episode), anime_name],
+        ["ani-cli", "-N", "-S", "1", "-q", "best", "-e", str(episode), anime_name],
         capture_output=True, text=True, env=env, timeout=120
     )
     
